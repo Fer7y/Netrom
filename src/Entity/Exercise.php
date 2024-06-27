@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ExerciseRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ExerciseRepository::class)]
@@ -16,8 +18,17 @@ class Exercise
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $type = null;
+    /**
+     * @var Collection<int, MuscleGroup>
+     */
+    #[ORM\ManyToMany(targetEntity: MuscleGroup::class, inversedBy: 'exercises')]
+    private Collection $muscleid;
+
+    public function __construct()
+    {
+        $this->muscleid = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -36,15 +47,29 @@ class Exercise
         return $this;
     }
 
-    public function getType(): ?string
+    /**
+     * @return Collection<int, MuscleGroup>
+     */
+    public function getMuscleid(): Collection
     {
-        return $this->type;
+        return $this->muscleid;
     }
 
-    public function setType(string $type): static
+    public function addMuscleid(MuscleGroup $muscleid): static
     {
-        $this->type = $type;
+        if (!$this->muscleid->contains($muscleid)) {
+            $this->muscleid->add($muscleid);
+        }
 
         return $this;
     }
+
+    public function removeMuscleid(MuscleGroup $muscleid): static
+    {
+        $this->muscleid->removeElement($muscleid);
+
+        return $this;
+    }
+
+
 }
