@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,5 +44,22 @@ class UserController extends AbstractController
             'form' => $form,
         ]);
 
+
     }
+
+         #[Route('/user/{id}', name: 'user_show', requirements: ['id' => '\d+'])]
+    public function show(UserRepository $entityManager, $id): Response
+    {
+        $id = (int) $id;
+        $user = $entityManager->find($id);
+
+        if (!$user) {
+            throw $this->createNotFoundException(
+                'No User found for id ' . $id
+            );
+        }
+
+        return new Response('Hello user: ' . $user->getEmail());
+    }
+
 }
