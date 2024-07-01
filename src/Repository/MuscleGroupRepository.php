@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\MuscleGroup;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,6 +15,13 @@ class MuscleGroupRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, MuscleGroup::class);
+    }
+    public function saveMuscleGroup(MuscleGroup $muscleGroup)
+    {
+        $this->getEntityManager()->persist($muscleGroup);  //update sau save ->persist
+        $this->getEntityManager()->flush();
+
+
     }
 
     //    /**

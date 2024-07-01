@@ -9,6 +9,7 @@ use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 class UserController extends AbstractController
@@ -22,7 +23,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/user/register', name: 'register_user')]
-    public function store(Request $request, UserRepository $userRepository): Response
+    public function store(Request $request, UserRepository $userRepository,UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
 
@@ -33,7 +34,9 @@ class UserController extends AbstractController
             // $form->getData() holds the submitted values
             // but, the original `$task` variable has also been updated
             $user = $form->getData();
-
+            $password=$passwordHasher->hashPassword($user , $user->getPassword());
+            $user->setPassword($password);
+            $user->setRole('ROLE_USER');
             $userRepository->saveUser($user);
             // ... perform some action, such as saving the task to the database
 
@@ -47,10 +50,10 @@ class UserController extends AbstractController
 
     }
 
-         #[Route('/user/{id}', name: 'user_show', requirements: ['id' => '\d+'])]
+    #[Route('/user/{id}', name: 'user_show', requirements: ['id' => '\d+'])]
     public function show(UserRepository $entityManager, $id): Response
     {
-        $id = (int) $id;
+        $id = (int)$id;
         $user = $entityManager->find($id);
 
         if (!$user) {
@@ -60,6 +63,15 @@ class UserController extends AbstractController
         }
 
         return new Response('Hello user: ' . $user->getEmail());
+    }
+
+    #[Route('/user/users', name: 'users_show')]
+    public function users(UserRepository $entityManager): Response
+    {
+        $users = $entityManager->findAll();
+
+
+        return $this->render('user/users.html.twig', ["users"=>$users]);
     }
 
 }

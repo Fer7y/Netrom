@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register User!{% endblock %}
+
+{% block body %}
+    {% for user in users %}
+        <div>{{ user.getEmail() }}</div>
+    {% endfor %}
+{% endblock %}

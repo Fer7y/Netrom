@@ -18,17 +18,9 @@ class Exercise
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    /**
-     * @var Collection<int, MuscleGroup>
-     */
-    #[ORM\ManyToMany(targetEntity: MuscleGroup::class, inversedBy: 'exercises')]
-    private Collection $muscleid;
-
-    public function __construct()
-    {
-        $this->muscleid = new ArrayCollection();
-    }
-
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?MuscleGroup $muscleGroup = null;
 
     public function getId(): ?int
     {
@@ -47,29 +39,15 @@ class Exercise
         return $this;
     }
 
-    /**
-     * @return Collection<int, MuscleGroup>
-     */
-    public function getMuscleid(): Collection
+    public function getMuscleGroup(): ?MuscleGroup
     {
-        return $this->muscleid;
+        return $this->muscleGroup;
     }
 
-    public function addMuscleid(MuscleGroup $muscleid): static
+    public function setMuscleGroup(?MuscleGroup $muscleGroup): static
     {
-        if (!$this->muscleid->contains($muscleid)) {
-            $this->muscleid->add($muscleid);
-        }
+        $this->muscleGroup = $muscleGroup;
 
         return $this;
     }
-
-    public function removeMuscleid(MuscleGroup $muscleid): static
-    {
-        $this->muscleid->removeElement($muscleid);
-
-        return $this;
-    }
-
-
 }
