@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}All Muscle Groups!{% endblock %}
+
+{% block body %}
+    {% for musclegroup in musclegroups %}
+        <div>{{ musclegroup.getType() }}</div>
+    {% endfor %}
+{% endblock %}

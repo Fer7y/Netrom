@@ -49,4 +49,13 @@ class MuscleGroupController extends AbstractController
 
     }
 
+    #[Route('/muscle-group/all', name: 'get_all_muscle_groups')]
+    public function get  (MuscleGroupRepository $entityManager): Response
+    {
+        $muscleGroups = $entityManager->findAll();
+
+
+        return $this->render('muscle_group/get.html.twig', ["musclegroups"=>$muscleGroups]);
+    }
+
 }
