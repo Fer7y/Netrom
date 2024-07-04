@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Exercise;
+use App\Entity\MuscleGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -15,6 +16,29 @@ class ExerciseRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Exercise::class);
     }
+    public function saveExercise(Exercise $exercise)
+    {
+        $this->getEntityManager()->persist($exercise);  //update sau save ->persist
+        $this->getEntityManager()->flush();
+
+
+    }
+    public function deleteExercise(Exercise $exercise)
+    {
+        $this->getEntityManager()->remove($exercise);
+        $this->getEntityManager()->flush();
+
+
+    }
+    public function findByMuscleGroup($muscleGroup)
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.muscleGroup = :muscleGroup')
+            ->setParameter('muscleGroup', $muscleGroup)
+            ->getQuery()
+            ->getResult();
+    }
+
 
     //    /**
     //     * @return Exercise[] Returns an array of Exercise objects

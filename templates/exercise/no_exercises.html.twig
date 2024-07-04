@@ -1,0 +1,11 @@
+{# templates/exercise/no_exercises.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}No Exercises Found{% endblock %}
+
+{% block body %}
+    <h1>No Exercises Found for {{ muscleGroup }}</h1>
+    <p>Sorry, but there are no exercises available for this muscle group.</p>
+
+    <a href="{{ path('exercise_list') }}">Back to all exercises</a>
+{% endblock %}

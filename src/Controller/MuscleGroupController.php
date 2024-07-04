@@ -8,6 +8,7 @@ use App\Form\MuscleGroupType;
 use App\Form\UserType;
 use App\Repository\MuscleGroupRepository;
 use App\Repository\UserRepository;
+use App\Services\MuscleGroupService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +26,7 @@ class MuscleGroupController extends AbstractController
     }
 
     #[Route('/muscle-group/add', name: 'add_muscle_group')]
-    public function add(Request $request, MuscleGroupRepository $muscleGroupRepository): Response
+    public function add(Request $request, MuscleGroupService $muscleGroupService): Response
     {
         $muscleGroup = new MuscleGroup();
 
@@ -37,7 +38,12 @@ class MuscleGroupController extends AbstractController
             // but, the original `$task` variable has also been updated
             $muscleGroup = $form->getData();
 
-            $muscleGroupRepository->saveMuscleGroup($muscleGroup);
+            $status = $muscleGroupService->saveMuscleGroup($muscleGroup);
+
+            if ($status['error']) {
+                $this->addFlash('error', $status['message']);
+                return $this->redirectToRoute('add_muscle_group');
+            }
             // ... perform some action, such as saving the task to the database
 
             return $this->redirectToRoute('app_muscle_group');
@@ -50,12 +56,13 @@ class MuscleGroupController extends AbstractController
     }
 
     #[Route('/muscle-group/all', name: 'get_all_muscle_groups')]
-    public function get  (MuscleGroupRepository $entityManager): Response
+    public function get(MuscleGroupRepository $entityManager): Response
     {
         $muscleGroups = $entityManager->findAll();
 
 
-        return $this->render('muscle_group/get.html.twig', ["musclegroups"=>$muscleGroups]);
+        return $this->render('muscle_group/get.html.twig', ["musclegroups" => $muscleGroups]);
     }
 
 }
+

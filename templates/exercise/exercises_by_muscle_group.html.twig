@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Exercises for {{ muscleGroup }}{% endblock %}
+
+{% block body %}
+    <h1>Exercises for {{ muscleGroup }}</h1>
+
+    <ul>
+        {% for exercise in exercises %}
+            <li>{{ exercise.name }} - {{ exercise.description }}</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ path('exercise_list') }}">Back to all exercises</a>
+{% endblock %}
