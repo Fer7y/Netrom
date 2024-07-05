@@ -65,7 +65,7 @@ class ExerciseController extends AbstractController
         return $this->render('exercise/get.html.twig', ["exercises" => $exercises]);
     }
 
-    #[Route('/exercise/{id}', name: 'edit_exercise')]
+    #[Route('/exercise/{id}/update', name: 'edit_exercise')]
     public function edit(Request $request, ExerciseService $exerciseService, $id)
     {
         $form = $this->createForm(ExerciseType::class, $exerciseService->getExerciseById($id));
@@ -93,21 +93,23 @@ class ExerciseController extends AbstractController
 
     }
 
-    #[Route('/exercise/{id}', name: 'delete_exercise', methods: ['DELETE'])]
-    public function delete(Request $request, ExerciseService $exerciseService,$id)
-    {$exercise = $exerciseService->getExerciseById($id);
+    #[Route('/exercise/{id}/delete', name: 'delete_exercise', methods: ['DELETE'])]
+    public function delete(Request $request, ExerciseService $exerciseService, $id)
+    {
+        $exercise = $exerciseService->getExerciseById($id);
         $exerciseService->deleteExercise($exercise);
 
+        return $this->redirectToRoute('get_all_exercises');
 
     }
 
     #[Route('/exercise/musclegroupexercises', name: 'show_exercises', methods: ['GET'])]
-    public function getExercisesByMuscleGroup(Request $request, ExerciseService $exerciseService): Response
+    public function getExercisesByMuscleGroup(Request $request, ExerciseService $exerciseService, MuscleGroupService $muscleGroupService): Response
     {
-        $muscleGroup = $request->query->get('muscleGroup');
-        $exercises = $this->exerciseService->getExercisesByMuscleGroup($muscleGroup);
+        $muscleGroup = $muscleGroupService->findMuscleGroupByType($request->query->get('muscleGroup'));
+        $exercises = $exerciseService->getExercisesByMuscleGroup($muscleGroup);
 
-        if (empty($exercises)) {
+        if (!count($exercises)) {
             return $this->render('exercise/no_exercises.html.twig', [
                 'muscleGroup' => $muscleGroup,
             ]);

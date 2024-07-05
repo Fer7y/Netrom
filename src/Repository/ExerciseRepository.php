@@ -16,6 +16,7 @@ class ExerciseRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Exercise::class);
     }
+
     public function saveExercise(Exercise $exercise)
     {
         $this->getEntityManager()->persist($exercise);  //update sau save ->persist
@@ -23,6 +24,7 @@ class ExerciseRepository extends ServiceEntityRepository
 
 
     }
+
     public function deleteExercise(Exercise $exercise)
     {
         $this->getEntityManager()->remove($exercise);
@@ -30,13 +32,15 @@ class ExerciseRepository extends ServiceEntityRepository
 
 
     }
+
     public function findByMuscleGroup($muscleGroup)
     {
-        return $this->createQueryBuilder('e')
+        $query = $this->createQueryBuilder('e')
             ->andWhere('e.muscleGroup = :muscleGroup')
             ->setParameter('muscleGroup', $muscleGroup)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
+
+        return $query->getResult();
     }
 
 

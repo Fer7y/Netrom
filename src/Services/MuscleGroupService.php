@@ -16,6 +16,11 @@ class MuscleGroupService
 
     }
 
+    public function findMuscleGroupByType($type)
+    {
+        return $this->muscleGroupRepository->findOneBy(['type' => $type]);
+    }
+
     public function saveMuscleGroup(MuscleGroup $muscleGroup): array
     {
         try {
