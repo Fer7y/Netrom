@@ -28,12 +28,12 @@ class Workout
     /**
      * @var Collection<int, ExerciseLog>
      */
-    #[ORM\OneToMany(targetEntity: ExerciseLog::class, mappedBy: 'workout', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: ExerciseLog::class, mappedBy: 'workout', cascade: ['persist'], orphanRemoval: true)]
     private Collection $exerciseLogs;
-
     public function __construct()
     {
         $this->exerciseLogs = new ArrayCollection();
+        $this->CreatedAt= new \DateTimeImmutable();
     }
 
     public function getId(): ?int
