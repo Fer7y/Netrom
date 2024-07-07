@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Workouts{% endblock %}
+{% block title %}Exercise Log{% endblock %}
 
 {% block body %}
     <style>
@@ -19,6 +19,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 20px;
         }
 
         table, th, td {
@@ -46,35 +47,41 @@
     </style>
 
     <div class="example-wrapper">
-        <h1>Workouts</h1>
+        <h1>Exercise Log</h1>
 
+        <h2>Workout: {{ workout.name }}</h2>
+        <p><strong>User:</strong> {{ workout.pers.email }}</p>
+        <p><strong>Created at:</strong> {{ workout.createdAt|date("F jS \\a\\t g:ia") }}</p>
+
+        <h3>Exercises</h3>
         <table>
             <thead>
             <tr>
                 <th>Index</th>
-                <th>Name</th>
-                <th>User</th>
-                <th>Created at</th>
-                <th>Actions</th> {# Adăugăm coloana pentru butonul de acțiuni #}
+                <th>Duration</th>
+                <th>Sets</th>
+                <th>Reps</th>
             </tr>
             </thead>
             <tbody>
-            {% for workout in workouts %}
+            {% for exercise in exercises %}
                 <tr>
-                    <td>{{ workout.id }}</td>
-                    <td>{{ workout.name }}</td>
-                    <td>{{ workout.pers.email }}</td>
-                    <td>{{ workout.createdAt|date("F jS \\a\\t g:ia") }}</td>
-                    <td>
-                        <a href="{{ path('app_workout', { 'workoutId': workout.id }) }}">View Exercises</a>
-                    </td>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ exercise.duration }}</td>
+                    <td>{{ exercise.sets }}</td>
+                    <td>{{ exercise.reps }}</td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="5">No records found</td>
+                    <td colspan="4">No exercises found</td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
+
+        <div class="button-group">
+            {# Asigurați-vă că workoutId este furnizat pentru a genera link-ul corect #}
+            <a href="{{ path('app_workout', {'workoutId': workout.id}) }}" class="btn btn-secondary">Back to Workouts</a>
+        </div>
     </div>
 {% endblock %}

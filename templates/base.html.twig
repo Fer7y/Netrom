@@ -1,17 +1,75 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My App{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+    <!-- Alte linkuri CSS -->
+    <style>
+        body {
+            background-color: #e0f0ff; /* Albastru deschis pentru fundal */
+        }
+        .navbar {
+            background-color: #ffffff; /* Alb pentru navbar */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Umbra sub navbar */
+        }
+        .navbar-nav {
+            margin-left: auto; /* Așezare la dreapta pentru link-uri */
+            display: flex; /* Utilizare flexbox pentru a le pune pe orizontal */
+            align-items: center; /* Așezare centrată vertical */
+        }
+        .navbar-nav .nav-item {
+            margin-right: 20px; /* Spațiu între elemente */
+        }
+        .navbar-nav .nav-link {
+            color: #000; /* Text negru pentru linkurile din navbar */
+        }
+        .navbar-nav .nav-link:hover {
+            color: rgba(0, 0, 0, 0.75); /* Hover pentru linkurile din navbar */
+        }
+        .navbar-light .form-control {
+            background-color: #ffffff; /* Fundal alb pentru bara de căutare */
+            color: #000; /* Text negru pentru bara de căutare */
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+        <!-- Am eliminat tag-ul <a class="navbar-brand"> pentru a elimina "My App" -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav"> <!-- Utilizare flexbox pentru a pune linkurile pe orizontal -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_user') }}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('register_user') }}">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_login') }}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('add_exercise') }}">Exercise Add</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('get_all_exercises') }}">All Exercises</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('add_workout') }}">Add Workout</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_workout') }}">Workouts</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+<div class="container mt-4">
+    {% block body %}{% endblock %}
+</div>
+
+<!-- Scripturile JavaScript pentru Bootstrap nu sunt necesare pentru acest caz -->
+</body>
 </html>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Entity\User;
 use App\Entity\Workout;
 use App\Repository\WorkoutRepository;
 
@@ -19,8 +20,8 @@ class WorkoutService
         $this->workoutRepository->saveWorkout($workout);
     }
 
-    public function getAllWorkouts(): array
+    public function getWorkoutsByUser(User $user): array
     {
-        return $this->workoutRepository->findAll();
+        return $this->workoutRepository->findBy(['pers' => $user]);
     }
 }

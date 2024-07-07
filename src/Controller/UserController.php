@@ -36,7 +36,7 @@ class UserController extends AbstractController
             $user = $form->getData();
             $password=$passwordHasher->hashPassword($user , $user->getPassword());
             $user->setPassword($password);
-            $user->setRole('ROLE_USER');
+            $user->setRoles(['ROLE_USER']);
             $userRepository->saveUser($user);
             // ... perform some action, such as saving the task to the database
 

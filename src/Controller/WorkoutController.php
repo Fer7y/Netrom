@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Workout;
 use App\Form\WorkoutType;
+use App\Repository\ExerciseRepository;
+use App\Repository\WorkoutRepository;
 use App\Services\WorkoutService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,8 +18,16 @@ class WorkoutController extends AbstractController
     #[Route('/workouts', name: 'app_workout')]
     public function index(WorkoutService $workoutService): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+        if (!$user) {
+            throw new \Exception('User not logged in');
+        }
+
+        $workouts = $workoutService->getWorkoutsByUser($user);
+
         return $this->render('workout/index.html.twig', [
-            'workouts' => $workoutService->getAllWorkouts(),
+            'workouts' => $workouts,
         ]);
     }
 
@@ -37,7 +47,10 @@ class WorkoutController extends AbstractController
             $user = $this->getUser();
             if ($user) {
                 $workout->setPers($user);
+            } else {
+                throw new \Exception('User not logged in or not available');
             }
+
 
             $workoutService->saveWorkout($workout);
 
