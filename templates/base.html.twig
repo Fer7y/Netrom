@@ -4,30 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}My App{% endblock %}</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
-    <!-- Alte linkuri CSS -->
+    {% block stylesheets %}
+        {# Bootstrap CSS from CDN #}
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    {% endblock %}
+    {% block javascripts %}
+        {# jQuery, Popper.js, and Bootstrap JS from CDN #}
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
     <style>
         body {
-            background-color: #e0f0ff; /* Albastru deschis pentru fundal */
+            background-color: #e0f0ff;
         }
+
         .navbar {
-            background-color: #ffffff; /* Alb pentru navbar */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Umbra sub navbar */
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         .navbar-nav {
-            margin-left: auto; /* Așezare la dreapta pentru link-uri */
-            display: flex; /* Utilizare flexbox pentru a le pune pe orizontal */
-            align-items: center; /* Așezare centrată vertical */
+            /*margin-left: auto;*/
+            display: flex;
+            align-items: center;
         }
+
         .navbar-nav .nav-item {
-            margin-right: 20px; /* Spațiu între elemente */
+            margin-right: 20px;
         }
+
         .navbar-nav .nav-link {
-            color: #000; /* Text negru pentru linkurile din navbar */
+            color: #000;
         }
+
         .navbar-nav .nav-link:hover {
             color: rgba(0, 0, 0, 0.75); /* Hover pentru linkurile din navbar */
         }
+
         .navbar-light .form-control {
             background-color: #ffffff; /* Fundal alb pentru bara de căutare */
             color: #000; /* Text negru pentru bara de căutare */
@@ -38,17 +53,21 @@
 <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container">
         <!-- Am eliminat tag-ul <a class="navbar-brand"> pentru a elimina "My App" -->
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="collapse navbar-collapse" id="navbarNav" style="justify-content: center">
             <ul class="navbar-nav"> <!-- Utilizare flexbox pentru a pune linkurile pe orizontal -->
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('app_user') }}">Home</a>
                 </li>
+                {% if not app.user %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('register_user') }}">Register</a>
                 </li>
+                {%endif%}
+                {% if not app.user %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('app_login') }}">Login</a>
                 </li>
+                {%endif%}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('add_exercise') }}">Exercise Add</a>
                 </li>
@@ -61,6 +80,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('app_workout') }}">Workouts</a>
                 </li>
+                {% if is_granted('ROLE_TRAINER') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('users_show') }}">Users</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>

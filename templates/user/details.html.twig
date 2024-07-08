@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Users{% endblock %}
+{% block title %}User Details{% endblock %}
 
 {% block body %}
     <table class="table table-dark">
@@ -8,16 +8,18 @@
         <tr>
             <th>Index</th>
             <th>Email</th>
+            <th>Name</th>
             <th>Actions</th>
         </tr>
         </thead>
         <tbody>
-        {% for user in users %}
+        {% for workout in user.workouts %}
             <tr>
-                <td>{{ user.id }}</td>
+                <td>{{ workout.id }}</td>
                 <td>{{ user.email }}</td>
+                <td>{{ workout.name }}</td>
                 <td>
-                    <a href="{{ path('user_details', { 'userId': user.id }) }}">User Details</a>
+                    <a href="{{ path('all_exercise_log', { 'workoutId': workout.id }) }}">Show Details</a>
                 </td>
             </tr>
         {% else %}

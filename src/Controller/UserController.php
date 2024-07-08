@@ -73,5 +73,13 @@ class UserController extends AbstractController
 
         return $this->render('user/users.html.twig', ["users"=>$users]);
     }
+    #[Route('/user/users/{userId}', name: 'user_details')]
+    public function details(UserRepository $entityManager,$userId): Response
+    {
+        $user = $entityManager->find($userId);
+
+
+        return $this->render('user/details.html.twig', ["user"=>$user]);
+    }
 
 }

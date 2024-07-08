@@ -36,7 +36,7 @@ class ExerciseLogController extends AbstractController
 
         $workout = $this->workoutRepository->findOneBy([
             'id' => $workoutId,
-            'pers' => $user,
+//            'pers' => $user,
         ]);
 
         if (!$workout) {
