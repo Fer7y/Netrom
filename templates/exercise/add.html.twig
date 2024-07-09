@@ -1,25 +1,42 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Add MuscleGroup!{% endblock %}
+{% block title %}
+    Add Exercise!
+{% endblock %}
 
 {% block body %}
-    <p>Add Exercise</p>
-    {% for label, messages in app.flashes %}
-        <div class="flash-message flash-{{ label }}">
-            {% for message in messages %}
-                <p>{{ message }}</p>
-            {% endfor %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1 class="text-dark">Add Exercise</h1>
+            </div>
         </div>
 
-    {% endfor %}
+        {% for label, messages in app.flashes %}
+            <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                {% for message in messages %}
+                    <p class="text-dark">{{ message }}</p>
+                {% endfor %}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
 
-
-
-    {{ form_start(form) }}
-
-
-
-
-
-    {{ form_end(form) }}
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        {{ form_start(form, {'attr': {'class': 'form'}}) }}
+                        <div class="mb-3">
+                            {{ form_row(form.name, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_row(form.muscleGroup, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <button type="submit" class="custom-button2 btn btn-primary">Add</button>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

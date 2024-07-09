@@ -3,30 +3,36 @@
 {% block title %}User Details{% endblock %}
 
 {% block body %}
-    <table class="table table-dark">
-        <thead>
-        <tr>
-            <th>Index</th>
-            <th>Email</th>
-            <th>Name</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for workout in user.workouts %}
-            <tr>
-                <td>{{ workout.id }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ workout.name }}</td>
-                <td>
-                    <a href="{{ path('all_exercise_log', { 'workoutId': workout.id }) }}">Show Details</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">No records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="container">
+        <h1 class="mt-4 mb-4">User Details</h1>
+
+        <div class="table-responsive">
+            <table class="table table-dark table-striped">
+                <thead>
+                <tr>
+                    <th>Index</th>
+                    <th>Email</th>
+                    <th>Workout Name</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for workout in user.workouts %}
+                    <tr>
+                        <td>{{ workout.id }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ workout.name }}</td>
+                        <td>
+                            <a href="{{ path('all_exercise_log', { 'workoutId': workout.id }) }}" class="btn btn-primary btn-sm">Show Details</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">No records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

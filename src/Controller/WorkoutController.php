@@ -16,6 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class WorkoutController extends AbstractController
 {
     #[Route('/workouts', name: 'app_workout')]
+    #[Security('is_granted("ROLE_USER")')]
     public function index(WorkoutService $workoutService): Response
     {
         /** @var User $user */
@@ -27,6 +28,15 @@ class WorkoutController extends AbstractController
         $workouts = $workoutService->getWorkoutsByUser($user);
 
         return $this->render('workout/index.html.twig', [
+            'workouts' => $workouts,
+        ]);
+    }
+    #[Route('/workouts/trainer', name: 'app1_workout')]
+    public function allWorkouts(WorkoutRepository $workoutRepository): Response
+    {
+        $workouts = $workoutRepository->findAll();
+
+        return $this->render('workout/workouts.html.twig', [
             'workouts' => $workouts,
         ]);
     }

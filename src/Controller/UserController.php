@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class UserController extends AbstractController
 {
-    #[Route('/user', name: 'app_user')]
+    #[Route('/HomePage', name: 'app_user')]
     public function index(): Response
     {
         return $this->render('user/index.html.twig', [

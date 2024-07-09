@@ -3,55 +3,49 @@
 {% block title %}Create workout{% endblock %}
 
 {% block body %}
-    {{ form_start(form) }}
+    <div class="container">
+        <h1>Create Workout</h1>
 
-    <ul class="exerciseLogs"
-        data-index="{{ form.exerciseLogs|length > 0 ? form.exerciseLogs|last.vars.name + 1 : 0 }}"
-        data-prototype="{{ form_widget(form.exerciseLogs.vars.prototype)|e('html_attr') }}"
-    >
-        {% for exerciseLog in form.exerciseLogs %}
-            <li>{{ form_row(exerciseLog) }}</li>
-        {% endfor %}
-    </ul>
-    <button type="button" class="add_item_link" data-collection-holder-class="exerciseLogs">Add a exercise log</button>
-    {{ form_end(form) }}
+        <div class="card">
+            <div class="card-body">
+                {{ form_start(form) }}
+
+                <ul class="list-group exerciseLogs"
+                    data-index="{{ form.exerciseLogs|length > 0 ? form.exerciseLogs|last.vars.name + 1 : 0 }}"
+                    data-prototype="{{ form_widget(form.exerciseLogs.vars.prototype)|e('html_attr') }}"
+                >
+                </ul>
+
+                <button type="button" class="btn btn-primary add-item mt-3">Add Exercise Log</button>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
 
     <script>
-        document
-            .querySelectorAll('.add_item_link')
-            .forEach(btn => {
-                btn.addEventListener("click", addFormToCollection)
+        document.addEventListener('DOMContentLoaded', function () {
+            const addButton = document.querySelector('.add-item');
+            const collectionHolder = document.querySelector('.exerciseLogs');
+
+            addButton.addEventListener('click', function () {
+                const index = collectionHolder.dataset.index;
+                const prototype = collectionHolder.dataset.prototype.replace(/__name__/g, index);
+
+                const newItem = document.createElement('li');
+                newItem.classList.add('list-group-item', 'mb-2');
+                newItem.innerHTML = prototype + '<button type="button" class="btn btn-danger btn-sm float-end remove-item">Remove</button>';
+                collectionHolder.appendChild(newItem);
+
+                collectionHolder.dataset.index++;
             });
 
-        function addFormToCollection(e) {
-            const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
-
-            const item = document.createElement('li');
-
-            item.innerHTML = collectionHolder
-                .dataset
-                .prototype
-                .replace(
-                    /__name__/g,
-                    collectionHolder.dataset.index
-                );
-
-            collectionHolder.appendChild(item);
-
-            collectionHolder.dataset.index++;
-
-            // add remove button
-            const removeFormButton = document.createElement('button');
-            removeFormButton.innerText = 'Remove this Exercise Log';
-
-            item.append(removeFormButton);
-
-            removeFormButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                // remove the li for the exerciseLog form
-                item.remove();
+            collectionHolder.addEventListener('click', function (event) {
+                if (event.target.classList.contains('remove-item')) {
+                    event.preventDefault();
+                    event.target.closest('li').remove();
+                }
             });
-        }
+        });
     </script>
-
 {% endblock %}

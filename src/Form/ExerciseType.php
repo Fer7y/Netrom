@@ -17,15 +17,13 @@ class ExerciseType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'name',
+                'label' => 'Name',
             ])
         ->add ('muscleGroup', EntityType::class, [
             'class' => MuscleGroup::class,
             'choice_label' => 'type',
         ])
-            ->add(  'button',  SubmitType::Class, [
-                'label' => 'Add',
-            ])
+
         ;
     }
 

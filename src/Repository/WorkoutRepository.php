@@ -21,4 +21,11 @@ class WorkoutRepository extends ServiceEntityRepository
         $this->getEntityManager()->persist($workout);
         $this->getEntityManager()->flush();
     }
+    public function findAllWorkouts()
+    {
+        return $this->createQueryBuilder('w')
+            ->orderBy('w.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

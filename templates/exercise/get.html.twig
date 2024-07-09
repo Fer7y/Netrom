@@ -3,101 +3,43 @@
 {% block title %}Exercises!{% endblock %}
 
 {% block body %}
-    <style>
-        .example-wrapper {
-            margin: 1em auto;
-            max-width: 800px;
-            width: 95%;
-            font: 18px/1.5 sans-serif;
-        }
+    <div class="container">
+        <h1 class="mt-4 mb-4">Exercises</h1>
 
-        .example-wrapper code {
-            background: #F5F5F5;
-            padding: 2px 6px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        table, th, td {
-            border: 1px solid black;
-        }
-
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 10px;
-        }
-
-        .button-group button {
-            padding: 5px 10px;
-            cursor: pointer;
-        }
-    </style>
-
-    <div class="example-wrapper">
-        <h1>Exercises</h1>
-
-        <table class="table table-dark">
-            <thead>
-            <tr>
-                <th>Index</th>
-                <th>Name</th>
-                <th>Muscle group</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for exercise in exercises %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-dark">
+                <thead>
                 <tr>
-                    <td>{{ exercise.id }}</td>
-                    <td>{{ exercise.name }}</td>
-                    <td>
-                        {{ exercise.getMuscleGroup().getType() }}
-                        <form action="{{ path('show_exercises') }}" method="get">
-                            <input type="hidden" name="muscleGroup" value="{{ exercise.getMuscleGroup().getType() }}">
-                            <button type="submit">
-                                Show Exercises
-                            </button>
-                        </form>
-                    </td>
-                    <td>
-                        <div class="button-group">
-                            <form action="{{ path('edit_exercise', { 'id': exercise.id }) }}">
-                                <button>
-                                    Edit
-                                </button>
-                            </form>
-                            <form action="{{ path('delete_exercise', { 'id': exercise.id }) }}" method="delete">
-                                <button>
-                                    Delete
-                                </button>
-                            </form>
-                        </div>
-                    </td>
+                    <th scope="col">Index</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Muscle group</th>
+                    <th scope="col">Actions</th>
                 </tr>
-            {% else %}
-                <tr>
-                    <td colspan="3">No records found</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for exercise in exercises %}
+                    <tr>
+                        <td>{{ exercise.id }}</td>
+                        <td>{{ exercise.name }}</td>
+                        <td>{{ exercise.getMuscleGroup().getType() }}</td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Exercise Actions">
+                                <a href="{{ path('edit_exercise', { 'id': exercise.id }) }}" class="btn btn-primary">Edit</a>
+                                <a href="{{ path('delete_exercise', { 'id': exercise.id }) }}" class="btn btn-danger">Delete</a>
+                                <form action="{{ path('show_exercises') }}" method="get">
+                                    <input type="hidden" name="muscleGroup" value="{{ exercise.getMuscleGroup().getType() }}">
+                                    <button type="submit" class="btn btn-success">Show Exercises</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">No records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-
-    <script>
-        function editExercise(id) {
-            console.log('edit', id);
-        }
-
-        function deleteExercise(id) {
-            console.log('delete', id);
-        }
-    </script>
 {% endblock %}

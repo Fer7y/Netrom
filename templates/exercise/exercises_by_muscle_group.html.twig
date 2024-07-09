@@ -1,15 +1,42 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Exercises for {{ muscleGroup.type }}{% endblock %}
+{% block title %}
+    Exercises for {{ muscleGroup.type }}
+{% endblock %}
 
 {% block body %}
-    <h1>Exercises for {{ muscleGroup.type }}</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1 class="mt-4 mb-4">Exercises for {{ muscleGroup.type }}</h1>
+            </div>
+        </div>
 
-    <ul>
-        {% for exercise in exercises %}
-            <li>{{ exercise.name }} </li>
-        {% endfor %}
-    </ul>
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Exercise Name</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for exercise in exercises %}
+                            <tr>
+                                <td>{{ exercise.name }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-    <a href="{{ path('get_all_exercises') }}">Back to all exercises</a>
+        <div class="row mt-4">
+            <div class="col-md-12 text-center">
+                <a href="{{ path('get_all_exercises') }}" class="custom-button2">Back to all exercises</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}
